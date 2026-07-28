@@ -62,7 +62,7 @@
   .card:hover .card-bg{transform:scale(1)}
   .card:hover .card-bg::after{background:linear-gradient(180deg,rgba(241,80,15,.08) 0%,rgba(10,8,6,.3) 22%,
       rgba(10,8,6,.82) 46%,rgba(10,8,6,.95) 72%,rgba(10,8,6,.98) 100%)}
-  .card .ic{width:54px;height:54px;border-radius:14px;overflow:hidden;margin-bottom:16px;flex:none;
+  .card .ic{width:68px;height:68px;border-radius:16px;overflow:hidden;margin-bottom:16px;flex:none;
     border:1px solid rgba(255,255,255,.2);box-shadow:0 8px 22px rgba(0,0,0,.55);
     transition:transform .4s,box-shadow .4s}
   .card .ic img{width:100%;height:100%;object-fit:cover;display:block}
@@ -77,7 +77,7 @@
   /* ===== industries: circles orbiting the logo, 360° in the screen plane ===== */
   .ring-stage{position:relative;height:772px}
   .ring{position:absolute;inset:0;animation:ringspin 44s linear infinite}
-  .ring:hover{animation-play-state:paused}
+  /* the ring never pauses — hovering opens the popup instead of stopping rotation */
   @keyframes ringspin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
   @keyframes ringspin-rev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
   .icard{position:absolute;top:50%;left:50%;width:172px;height:172px;margin:-86px 0 0 -86px;
@@ -88,7 +88,6 @@
     border:1px solid var(--border);backdrop-filter:blur(8px);
     animation:ringspin-rev 44s linear infinite;
     transition:border-color .3s,box-shadow .3s,background .3s}
-  .ring:hover .icard-in{animation-play-state:paused}
   .icard:hover .icard-in{border-color:var(--accent);
     background:radial-gradient(120% 120% at 50% 0%,rgba(241,80,15,.34),rgba(24,15,9,.96));
     box-shadow:0 0 0 1px rgba(241,80,15,.4),0 18px 46px rgba(0,0,0,.6),0 0 44px rgba(241,80,15,.25)}
@@ -182,30 +181,44 @@
   .imp span{color:var(--muted);font-size:12.5px;display:block;margin-top:6px}
   .marquee{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
     mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-  .mtrack{display:flex;gap:18px;width:max-content;animation:scrollx 34s linear infinite}
+  .mtrack{display:flex;gap:44px;align-items:center;width:max-content;animation:scrollx 34s linear infinite}
   .marquee:hover .mtrack{animation-play-state:paused}
   @keyframes scrollx{to{transform:translateX(-50%)}}
-  .lchip{display:flex;align-items:center;gap:12px;border:1px solid var(--border);background:var(--glass);
-    border-radius:16px;padding:12px 22px;white-space:nowrap}
-  .lchip img{width:44px;height:44px;border-radius:10px;background:#fff;padding:5px;object-fit:contain;
-    filter:grayscale(1);opacity:.78;transition:filter .3s,opacity .3s}
+  /* no chip box and no plate — the real logos scroll directly on the page, always full colour */
+  .lchip{display:flex;align-items:center;gap:14px;padding:10px 16px;white-space:nowrap}
+  .lchip img{height:64px;width:auto;max-width:130px;object-fit:contain;
+    filter:drop-shadow(0 10px 20px rgba(0,0,0,.62)) drop-shadow(0 2px 4px rgba(0,0,0,.5))}
   /* wordmark logos read as themselves — shown wider, and the chip drops its text label */
-  .lchip img.wide{width:auto;height:34px;max-width:132px;padding:5px 9px}
-  /* logos drawn in white need a dark plate instead of the default white one */
-  .lchip img.dark{background:#1b1410;border:1px solid rgba(255,255,255,.16)}
-  .lchip:hover img{filter:none;opacity:1}
-  .lchip span{color:var(--muted);font-size:14px}
+  .lchip img.wide{height:46px;max-width:190px}
+  /* only logos whose ink is too dark to read on the page get a soft round backing (never a square) */
+  .lchip img.lift{padding:10px 18px;
+    background:radial-gradient(circle,rgba(255,255,255,.96) 0%,rgba(255,255,255,.9) 54%,rgba(255,255,255,0) 75%)}
+  .lchip span{color:var(--muted);font-size:15px}
   .lchip .mono{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#c93007,var(--accent2));
     display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;color:#fff;font-size:12px;flex:none}
   #modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:24px}
   #modal.open{display:flex}
   #modal .mback{position:absolute;inset:0;background:rgba(5,3,2,.78);backdrop-filter:blur(6px)}
-  #modal .mbox{position:relative;max-width:760px;max-height:82vh;overflow:auto;background:#171009;
-    border:1px solid var(--border);border-radius:24px;padding:40px 44px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
-  #modal h3{font-size:26px;margin-bottom:4px}
-  #modal .msub{color:var(--accent2);font-size:12px;letter-spacing:3px;text-transform:uppercase}
-  #modal .mbody{margin-top:18px;color:var(--muted);font-size:14.5px;line-height:1.85;font-weight:300;white-space:pre-line}
-  #modal .mclose{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer}
+  /* circular popup — the copy scrolls inside the disc so nothing is cut */
+  /* 84vw leaves room for #modal's own 24px padding, so the disc never overflows on small screens */
+  #modal .mbox{position:relative;width:min(84vw,80vh,700px);height:min(84vw,80vh,700px);border-radius:50%;
+    background:radial-gradient(125% 125% at 50% 0%,rgba(241,80,15,.22),#150e08 62%);
+    border:1px solid rgba(241,80,15,.38);padding:0;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 30px 90px rgba(0,0,0,.72),0 0 70px rgba(241,80,15,.18);
+    overflow:hidden;animation:mpop .32s cubic-bezier(.2,.8,.3,1)}
+  @keyframes mpop{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+  /* 64%/66% keeps the content rectangle's corners inside the inscribed circle (half-diagonal 0.92r) */
+  #modal .minner{width:64%;max-height:66%;overflow-y:auto;text-align:center;padding:2px 6px;
+    scrollbar-width:thin;scrollbar-color:rgba(241,80,15,.5) transparent}
+  #modal .minner::-webkit-scrollbar{width:5px}
+  #modal .minner::-webkit-scrollbar-thumb{background:rgba(241,80,15,.5);border-radius:3px}
+  #modal h3{font-size:23px;margin-bottom:4px;line-height:1.25}
+  #modal .msub{color:var(--accent2);font-size:11px;letter-spacing:3px;text-transform:uppercase}
+  #modal .mbody{margin-top:14px;color:var(--muted);font-size:13.5px;line-height:1.8;font-weight:300;
+    white-space:pre-line;text-align:left}
+  /* centred near the top so it stays inside the disc — a corner position would fall outside it */
+  #modal .mclose{position:absolute;top:6%;left:50%;transform:translateX(-50%);background:none;border:none;
+    color:var(--muted);font-size:28px;cursor:pointer;line-height:1;z-index:2}
   #modal .mclose:hover{color:var(--text)}
   .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px}
   .cbox{background:var(--glass);border:1px solid var(--border);border-radius:22px;padding:32px}
@@ -376,8 +389,10 @@
 
 <button id="toTop" title="Back to top">↑</button>
 <div id="modal"><div class="mback"></div><div class="mbox">
-  <button class="mclose">×</button>
-  <div class="msub" id="m-sub"></div><h3 id="m-title"></h3><div class="mbody" id="m-body"></div>
+  <button class="mclose" aria-label="Close">×</button>
+  <div class="minner">
+    <div class="msub" id="m-sub"></div><h3 id="m-title"></h3><div class="mbody" id="m-body"></div>
+  </div>
 </div></div>
 
 <footer>
@@ -448,26 +463,27 @@ if(!reduced&&matchMedia('(pointer:fine)').matches){
   });
 }else{var cg=document.getElementById('cursor-glow');if(cg)cg.style.display='none';}
 /* clients marquee */
-/* w:1 = wordmark logo (rendered wide, replaces the text label)
-   d:1 = logo is drawn in white, so it needs a dark plate rather than the default white one */
+/* w:1    = wordmark logo (rendered wide, replaces the text label)
+   lift:1 = ink too dark to read straight on the page (measured mean luminance < 95),
+            so it gets a soft round backing. Every other logo sits directly on the background. */
 var CLIENTS=[
  {n:'Hombale Films',i:'logos/hombale.png'},
  {n:'SVYASA University',i:'logos/svyasa.png'},
  {n:'Cadabams Group',i:'logos/cadabams.png'},
- {n:'NIMHANS',i:'logos/nimhans.png',w:1},
- {n:'IIM Bangalore',i:'logos/iimb.png'},
+ {n:'NIMHANS',i:'logos/nimhans.png',w:1,lift:1},
+ {n:'IIM Bangalore',i:'logos/iimb.png',lift:1},
  {n:'ISRO',i:'logos/isro.png'},
  {n:'Karnataka Examinations Authority',i:'logos/kea.png',w:1},
- {n:'Organic Mandya',i:'logos/organicmandya.png',w:1},
+ {n:'Organic Mandya',i:'logos/organicmandya.png',w:1,lift:1},
  {n:'World Fashion Exchange',i:'logos/wfx.png'},
- {n:'Refinery Hotel, New York',i:'logos/refinery.png',w:1,d:1},
+ {n:'Refinery Hotel, New York',i:'logos/refinery.png',w:1},
  {n:'Global Malls',i:'logos/globalmalls.png'},
  {n:'PVR-INOX',i:'logos/pvrinox.png',w:1}
 ];
 var track=document.getElementById('mtrack');
 if(track){
   var h=CLIENTS.map(function(c){
-    var cls=((c.w?'wide ':'')+(c.d?'dark':'')).trim();
+    var cls=((c.w?'wide ':'')+(c.lift?'lift':'')).trim();
     var img='<img class="'+cls+'" src="'+c.i+'" alt="'+c.n+'" title="'+c.n+'" onerror="this.outerHTML=\'<div class=mono>'+c.n.charAt(0)+'</div>\'">';
     return '<div class="lchip">'+img+(c.w?'':'<span>'+c.n+'</span>')+'</div>';
   }).join('');
@@ -515,12 +531,24 @@ var IND=[
 {s:'E-commerce',t:'Commerce at scale',b:'Shopperr — built the full technology stack for this India-based shopping and dropshipping platform spanning electronics, apparel, computers, books, watches and home & kitchen, with Amazon India integrated as a sales channel. Supports roughly 1,000 orders a day and ₹60 crore+ in revenue.\n\nNaya Source — built the full stack for this B2B commerce platform: storefront, order management and backend infrastructure to run commerce at scale, integrated with Amazon India.'}
 ];
 var modal=document.getElementById('modal');
+function openM(i){
+  var d=IND[i];if(!d)return;
+  document.getElementById('m-sub').textContent=d.s;
+  document.getElementById('m-title').textContent=d.t;
+  document.getElementById('m-body').textContent=d.b;
+  modal.querySelector('.minner').scrollTop=0;
+  modal.classList.add('open');document.body.style.overflow='hidden';
+}
+/* Hold the cursor on a circle to open it; the short delay stops the popup firing
+   as the pointer sweeps across the ring. Clicking still opens it immediately. */
+var HOLD=420,holdTimer=null;
 document.querySelectorAll('.icard').forEach(function(c,i){
-  c.addEventListener('click',function(){var d=IND[i];if(!d)return;
-    document.getElementById('m-sub').textContent=d.s;
-    document.getElementById('m-title').textContent=d.t;
-    document.getElementById('m-body').textContent=d.b;
-    modal.classList.add('open');document.body.style.overflow='hidden';});
+  c.addEventListener('mouseenter',function(){
+    clearTimeout(holdTimer);
+    holdTimer=setTimeout(function(){openM(i);},HOLD);
+  });
+  c.addEventListener('mouseleave',function(){clearTimeout(holdTimer);});
+  c.addEventListener('click',function(){clearTimeout(holdTimer);openM(i);});
 });
 function closeM(){modal.classList.remove('open');document.body.style.overflow='';}
 modal.querySelector('.mback').addEventListener('click',closeM);
