@@ -575,7 +575,12 @@ function svgFor(t){
    Film titles (Salaar, Kantara …) have no separately licensable mark, so those blocks
    carry the Hombale Films logo — the studio that actually owns them. */
 var BRAND=[
- [/salaar|kantara|hombale|bagheera|yuva|mahavatar|dhoomam|brands of bharat|creative squad|talent tribe|astra studios/,'logos/hombale.png','Hombale Films'],
+ /* title-specific artwork first, so a Kantara line shows Kantara and a Salaar line shows Salaar;
+    anything else Hombale falls through to the studio mark. Stills are the studio's own
+    published assets from hombalefilms.com. */
+ [/kantara/,'logos/films/kantara.jpg','Kantara'],
+ [/salaar/,'logos/films/salaar.jpg','Salaar'],
+ [/hombale|bagheera|yuva|mahavatar|dhoomam|brands of bharat|astra studios/,'logos/hombale.png','Hombale Films'],
  [/s-?vyasa|digivyasa|city campus|yoga instructor|yoga for/,'logos/svyasa.png','SVYASA University'],
  [/nimhans/,'logos/nimhans.png','NIMHANS'],
  [/cadabams|mindtalk|wenest|anunitha|physiotattva|amitha/,'logos/cadabams.png','Cadabams Group'],
