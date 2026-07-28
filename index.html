@@ -62,11 +62,6 @@
   .card:hover .card-bg{transform:scale(1)}
   .card:hover .card-bg::after{background:linear-gradient(180deg,rgba(241,80,15,.08) 0%,rgba(10,8,6,.3) 22%,
       rgba(10,8,6,.82) 46%,rgba(10,8,6,.95) 72%,rgba(10,8,6,.98) 100%)}
-  .card .ic{width:68px;height:68px;border-radius:16px;overflow:hidden;margin-bottom:16px;flex:none;
-    border:1px solid rgba(255,255,255,.2);box-shadow:0 8px 22px rgba(0,0,0,.55);
-    transition:transform .4s,box-shadow .4s}
-  .card .ic img{width:100%;height:100%;object-fit:cover;display:block}
-  .card:hover .ic{transform:scale(1.1);box-shadow:0 10px 28px rgba(241,80,15,.45)}
   .card h3{font-size:19px;margin-bottom:10px}
   .card p{color:var(--muted);font-size:14px;line-height:1.7;font-weight:300}
   .card:hover p{color:#dbd0c6}
@@ -186,10 +181,10 @@
   @keyframes scrollx{to{transform:translateX(-50%)}}
   /* no chip box and no plate — the real logos scroll directly on the page, always full colour */
   .lchip{display:flex;align-items:center;gap:14px;padding:10px 16px;white-space:nowrap}
-  .lchip img{height:64px;width:auto;max-width:130px;object-fit:contain;
+  .lchip img{height:84px;width:auto;max-width:170px;object-fit:contain;
     filter:drop-shadow(0 10px 20px rgba(0,0,0,.62)) drop-shadow(0 2px 4px rgba(0,0,0,.5))}
   /* wordmark logos read as themselves — shown wider, and the chip drops its text label */
-  .lchip img.wide{height:46px;max-width:190px}
+  .lchip img.wide{height:60px;max-width:240px}
   /* only logos whose ink is too dark to read on the page get a soft round backing (never a square) */
   .lchip img.lift{padding:10px 18px;
     background:radial-gradient(circle,rgba(255,255,255,.96) 0%,rgba(255,255,255,.9) 54%,rgba(255,255,255,0) 75%)}
@@ -199,6 +194,10 @@
   #modal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:24px}
   #modal.open{display:flex}
   #modal .mback{position:absolute;inset:0;background:rgba(5,3,2,.78);backdrop-filter:blur(6px)}
+  /* a hover-opened popup must let pointer events through, or the backdrop would sit over the
+     circle the cursor is on, fire mouseleave immediately and close itself in a loop */
+  #modal.hover{pointer-events:none}
+  #modal.hover .mbox{pointer-events:auto}
   /* circular popup — the copy scrolls inside the disc so nothing is cut */
   /* 84vw leaves room for #modal's own 24px padding, so the disc never overflows on small screens */
   #modal .mbox{position:relative;width:min(84vw,80vh,700px);height:min(84vw,80vh,700px);border-radius:50%;
@@ -258,7 +257,7 @@
 <section class="hero">
   <div class="eyebrow">Technology · Marketing · Growth — Bengaluru</div>
   <h1>Ten industries.<br><span class="grad">One Athvie.</span></h1>
-  <p>Since 2023 we've helped institutions move faster — blending AI-native technology, strategy and storytelling across every sector we touch.</p>
+  <p>One team for technology, marketing and growth — we build the platform, run the campaign, and own the outcome.</p>
   <div class="stats">
     <div class="stat"><b data-count="10" data-suf="+">10+</b><span>Projects delivered</span></div>
     <div class="stat"><b data-count="10" data-suf="M+">10M+</b><span>Digital impressions</span></div>
@@ -294,11 +293,11 @@
   <h2 class="reveal">What we do</h2>
   <p class="sub reveal">Marketing and technology working as one team — AI-native from design to delivery.</p>
   <div class="grid">
-    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-tech.jpg')"></div><div class="ic"><img src="images/ic-tech.jpg" alt=""></div><h3>Technology Development</h3><p>Web and mobile applications, enterprise platforms and custom systems built for institutional scale.</p><p class="card-more">E-DigiVault on ERPNext v15 — 13 role-based applications and 4,000+ government services digitised across 30 districts.</p></div>
-    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-ai.jpg')"></div><div class="ic"><img src="images/ic-ai.jpg" alt=""></div><h3>AI &amp; Automation</h3><p>Workflow automation, AI-assisted development and intelligent process design — a compact team delivering at scale.</p><p class="card-more">Maestro, our AI fashion design studio, and the AI layer inside WFX — serving 55,000+ users across 50+ countries.</p></div>
-    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-growth.jpg')"></div><div class="ic"><img src="images/ic-growth.jpg" alt=""></div><h3>Growth Strategy</h3><p>Diagnosing where growth is stuck — acquisition, engagement, retention or operations — and building the roadmap through.</p><p class="card-more">SVYASA City Campus: 1 crore+ reach and 1,000+ admissions in year one. Shopperr: ₹60 cr+ revenue at 1,000 orders a day.</p></div>
-    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-brand.jpg')"></div><div class="ic"><img src="images/ic-brand.jpg" alt=""></div><h3>Marketing &amp; Brand</h3><p>Brand architecture, campaign strategy, content systems and digital marketing that flow straight into execution.</p><p class="card-more">Salaar Fan Army: 1.2 lakh+ verified registrations. HombaleVerse: ₹1 crore+ in merchandise within three months.</p></div>
-    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-data.jpg')"></div><div class="ic"><img src="images/ic-data.jpg" alt=""></div><h3>Data &amp; Analytics</h3><p>Dashboards, metrics and experimentation tracking — decisions grounded in signal, not intuition.</p><p class="card-more">Estify: 3,200+ costing items across CPWD DSR-2023, Railways USSOR-2021 and four KPWD books, exportable to Excel.</p></div>
+    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-tech.jpg')"></div><h3>Technology Development</h3><p>Web and mobile applications, enterprise platforms and custom systems built for institutional scale.</p><p class="card-more">E-DigiVault on ERPNext v15 — 13 role-based applications and 4,000+ government services digitised across 30 districts.</p></div>
+    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-ai.jpg')"></div><h3>AI &amp; Automation</h3><p>Workflow automation, AI-assisted development and intelligent process design — a compact team delivering at scale.</p><p class="card-more">Maestro, our AI fashion design studio, and the AI layer inside WFX — serving 55,000+ users across 50+ countries.</p></div>
+    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-growth.jpg')"></div><h3>Growth Strategy</h3><p>Diagnosing where growth is stuck — acquisition, engagement, retention or operations — and building the roadmap through.</p><p class="card-more">SVYASA City Campus: 1 crore+ reach and 1,000+ admissions in year one. Shopperr: ₹60 cr+ revenue at 1,000 orders a day.</p></div>
+    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-brand.jpg')"></div><h3>Marketing &amp; Brand</h3><p>Brand architecture, campaign strategy, content systems and digital marketing that flow straight into execution.</p><p class="card-more">Salaar Fan Army: 1.2 lakh+ verified registrations. HombaleVerse: ₹1 crore+ in merchandise within three months.</p></div>
+    <div class="card reveal"><div class="card-bg" style="background-image:url('images/bg-data.jpg')"></div><h3>Data &amp; Analytics</h3><p>Dashboards, metrics and experimentation tracking — decisions grounded in signal, not intuition.</p><p class="card-more">Estify: 3,200+ costing items across CPWD DSR-2023, Railways USSOR-2021 and four KPWD books, exportable to Excel.</p></div>
   </div>
 </section>
 
@@ -467,7 +466,7 @@ if(!reduced&&matchMedia('(pointer:fine)').matches){
    lift:1 = ink too dark to read straight on the page (measured mean luminance < 95),
             so it gets a soft round backing. Every other logo sits directly on the background. */
 var CLIENTS=[
- {n:'Hombale Films',i:'logos/hombale.png'},
+ {n:'Hombale Films',i:'logos/hombale.png',w:1},
  {n:'SVYASA University',i:'logos/svyasa.png'},
  {n:'Cadabams Group',i:'logos/cadabams.png'},
  {n:'NIMHANS',i:'logos/nimhans.png',w:1,lift:1},
@@ -531,26 +530,42 @@ var IND=[
 {s:'E-commerce',t:'Commerce at scale',b:'Shopperr — built the full technology stack for this India-based shopping and dropshipping platform spanning electronics, apparel, computers, books, watches and home & kitchen, with Amazon India integrated as a sales channel. Supports roughly 1,000 orders a day and ₹60 crore+ in revenue.\n\nNaya Source — built the full stack for this B2B commerce platform: storefront, order management and backend infrastructure to run commerce at scale, integrated with Amazon India.'}
 ];
 var modal=document.getElementById('modal');
-function openM(i){
+var hoverOpen=false;
+function openM(i,viaHover){
   var d=IND[i];if(!d)return;
   document.getElementById('m-sub').textContent=d.s;
   document.getElementById('m-title').textContent=d.t;
   document.getElementById('m-body').textContent=d.b;
   modal.querySelector('.minner').scrollTop=0;
-  modal.classList.add('open');document.body.style.overflow='hidden';
+  hoverOpen=!!viaHover;
+  modal.classList.toggle('hover',hoverOpen);
+  modal.classList.add('open');
+  /* only a clicked popup locks the page — a hover one must not fight the scroll */
+  document.body.style.overflow=hoverOpen?'':'hidden';
 }
 /* Hold the cursor on a circle to open it; the short delay stops the popup firing
-   as the pointer sweeps across the ring. Clicking still opens it immediately. */
-var HOLD=420,holdTimer=null;
+   as the pointer sweeps across the ring. Take the cursor away and it closes again.
+   Clicking opens it sticky, so it stays until dismissed. */
+var HOLD=420,holdTimer=null,closeTimer=null;
+function cancelClose(){clearTimeout(closeTimer);}
+function scheduleClose(){
+  if(!hoverOpen)return;
+  clearTimeout(closeTimer);
+  closeTimer=setTimeout(closeM,170); /* grace period to travel between circle and popup */
+}
 document.querySelectorAll('.icard').forEach(function(c,i){
   c.addEventListener('mouseenter',function(){
-    clearTimeout(holdTimer);
-    holdTimer=setTimeout(function(){openM(i);},HOLD);
+    cancelClose();clearTimeout(holdTimer);
+    holdTimer=setTimeout(function(){openM(i,true);},HOLD);
   });
-  c.addEventListener('mouseleave',function(){clearTimeout(holdTimer);});
-  c.addEventListener('click',function(){clearTimeout(holdTimer);openM(i);});
+  c.addEventListener('mouseleave',function(){clearTimeout(holdTimer);scheduleClose();});
+  c.addEventListener('click',function(){clearTimeout(holdTimer);cancelClose();openM(i,false);});
 });
-function closeM(){modal.classList.remove('open');document.body.style.overflow='';}
+var mboxEl=modal.querySelector('.mbox');
+mboxEl.addEventListener('mouseenter',cancelClose);
+mboxEl.addEventListener('mouseleave',scheduleClose);
+function closeM(){clearTimeout(closeTimer);hoverOpen=false;
+  modal.classList.remove('open','hover');document.body.style.overflow='';}
 modal.querySelector('.mback').addEventListener('click',closeM);
 modal.querySelector('.mclose').addEventListener('click',closeM);
 addEventListener('keydown',function(e){if(e.key==='Escape')closeM();});
