@@ -220,6 +220,10 @@
   #modal .mrow:last-child{margin-bottom:0}
   #modal .mico{flex:none;width:21px;height:21px;margin-top:2px}
   #modal .mico svg{width:100%;height:100%;fill:var(--accent2)}
+  /* blocks that name a real client show that client's actual logo instead of a glyph */
+  #modal .mico.brand{width:32px;height:32px;margin-top:0;border-radius:9px;background:#fff;padding:3px;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.5)}
+  #modal .mico.brand img{width:100%;height:100%;object-fit:contain;display:block}
   #modal .mrow p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.78;font-weight:300;white-space:pre-line}
   /* centred near the top so it stays inside the disc — a corner position would fall outside it */
   #modal .mclose{position:absolute;top:6%;left:50%;transform:translateX(-50%);background:none;border:none;
@@ -567,6 +571,30 @@ function svgFor(t){
   else if(/film|salaar|kantara|cinema|poster|audition|bagheera|yuva|hombale|studio/.test(s))k='film';
   return '<svg viewBox="0 0 24 24" aria-hidden="true">'+MICO[k]+'</svg>';
 }
+/* Where a block names a real client, show that client's own logo rather than a glyph.
+   Film titles (Salaar, Kantara …) have no separately licensable mark, so those blocks
+   carry the Hombale Films logo — the studio that actually owns them. */
+var BRAND=[
+ [/salaar|kantara|hombale|bagheera|yuva|mahavatar|dhoomam|brands of bharat|creative squad|talent tribe|astra studios/,'logos/hombale.png','Hombale Films'],
+ [/s-?vyasa|digivyasa|city campus|yoga instructor|yoga for/,'logos/svyasa.png','SVYASA University'],
+ [/nimhans/,'logos/nimhans.png','NIMHANS'],
+ [/cadabams|mindtalk|wenest|anunitha|physiotattva|amitha/,'logos/cadabams.png','Cadabams Group'],
+ [/iim ?bangalore|iim-?b\b|bba in digital|trilochan/,'logos/iimb.png','IIM Bangalore'],
+ [/isro|somanath/,'logos/isro.png','ISRO'],
+ [/karnataka examinations|kcet|counselling 2025/,'logos/kea.png','Karnataka Examinations Authority'],
+ [/organic mandya|malleshwaram|one village/,'logos/organicmandya.png','Organic Mandya'],
+ [/world fashion exchange|wfx/,'logos/wfx.png','World Fashion Exchange'],
+ [/refinery hotel|parker & quinn|hatbox|garment district/,'logos/refinery.png','Refinery Hotel'],
+ [/global malls|divinity/,'logos/globalmalls.png','Global Malls'],
+ [/pvr-?inox|superman/,'logos/pvrinox.png','PVR-INOX']
+];
+function iconFor(t){
+  var s=t.toLowerCase();
+  for(var i=0;i<BRAND.length;i++)
+    if(BRAND[i][0].test(s))
+      return {cls:' brand',html:'<img src="'+BRAND[i][1]+'" alt="'+BRAND[i][2]+'" loading="lazy">'};
+  return {cls:'',html:svgFor(t)};
+}
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 var hoverOpen=false;
 function openM(i,viaHover){
@@ -575,7 +603,8 @@ function openM(i,viaHover){
   document.getElementById('m-title').textContent=d.t;
   document.getElementById('m-body').innerHTML=d.b.split(/\n\s*\n/).map(function(par){
     par=par.trim(); if(!par)return '';
-    return '<div class="mrow"><span class="mico">'+svgFor(par)+'</span><p>'+escHtml(par)+'</p></div>';
+    var ic=iconFor(par);
+    return '<div class="mrow"><span class="mico'+ic.cls+'">'+ic.html+'</span><p>'+escHtml(par)+'</p></div>';
   }).join('');
   modal.querySelector('.minner').scrollTop=0;
   hoverOpen=!!viaHover;
