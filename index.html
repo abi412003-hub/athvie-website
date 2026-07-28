@@ -23,7 +23,7 @@
     background:radial-gradient(50% 45% at 68% 45%,rgba(241,80,15,.14),transparent 70%)}
   nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
     padding:14px 48px;backdrop-filter:blur(14px);background:rgba(10,8,6,.5);border-bottom:1px solid var(--border)}
-  .logo img{height:96px;display:block;margin:-26px 0;transition:height .35s,margin .35s}
+  .logo img{height:116px;display:block;margin:-36px 0;transition:height .35s,margin .35s}
   nav ul{display:flex;gap:28px;list-style:none}
   nav a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .2s}
   nav a:hover{color:var(--text)}
@@ -67,17 +67,17 @@
     font-size:13px;line-height:1.65;font-weight:400;
     transition:max-height .45s ease,opacity .35s ease,margin-top .45s ease}
   .card:hover .card-more{max-height:150px;opacity:1;margin-top:14px}
-  /* ===== industries: 360° rotating ring ===== */
-  .ring-stage{position:relative;height:540px;perspective:1500px;perspective-origin:50% 50%}
-  .ring{position:absolute;inset:0;transform-style:preserve-3d;animation:ringspin 44s linear infinite}
+  /* ===== industries: circles orbiting the logo, 360° in the screen plane ===== */
+  .ring-stage{position:relative;height:772px}
+  .ring{position:absolute;inset:0;animation:ringspin 44s linear infinite}
   .ring:hover{animation-play-state:paused}
-  @keyframes ringspin{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
-  @keyframes ringspin-rev{from{transform:rotateY(0deg)}to{transform:rotateY(-360deg)}}
-  .icard{position:absolute;top:50%;left:50%;width:200px;height:200px;margin:-100px 0 0 -100px;
-    border-radius:50%;transform-style:preserve-3d;cursor:pointer}
+  @keyframes ringspin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  @keyframes ringspin-rev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+  .icard{position:absolute;top:50%;left:50%;width:172px;height:172px;margin:-86px 0 0 -86px;
+    border-radius:50%;cursor:pointer}
   .icard-in{width:100%;height:100%;border-radius:50%;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;padding:24px;
-    background:radial-gradient(120% 120% at 50% 0%,rgba(241,80,15,.16),rgba(18,13,9,.94));
+    align-items:center;justify-content:center;text-align:center;padding:20px;
+    background:radial-gradient(130% 130% at 50% 0%,rgba(241,80,15,.24),rgba(20,14,10,.97));
     border:1px solid var(--border);backdrop-filter:blur(8px);
     animation:ringspin-rev 44s linear infinite;
     transition:border-color .3s,box-shadow .3s,background .3s}
@@ -85,9 +85,9 @@
   .icard:hover .icard-in{border-color:var(--accent);
     background:radial-gradient(120% 120% at 50% 0%,rgba(241,80,15,.34),rgba(24,15,9,.96));
     box-shadow:0 0 0 1px rgba(241,80,15,.4),0 18px 46px rgba(0,0,0,.6),0 0 44px rgba(241,80,15,.25)}
-  .icard h3{font-size:16px;margin-bottom:6px;line-height:1.25}
-  .icard .itag{color:var(--muted);font-size:12px;line-height:1.5;font-weight:300}
-  .icard .ihint{margin-top:9px;font-size:15px;color:var(--accent2);opacity:0;transition:opacity .25s}
+  .icard h3{font-size:15.5px;margin-bottom:5px;line-height:1.25}
+  .icard .itag{color:var(--muted);font-size:11.5px;line-height:1.45;font-weight:300}
+  .icard .ihint{margin-top:7px;font-size:14px;color:var(--accent2);opacity:0;transition:opacity .25s}
   .icard:hover .ihint{opacity:.95}
   .ring-hub{position:absolute;top:50%;left:50%;width:186px;height:186px;margin:-93px 0 0 -93px;
     z-index:6;display:flex;align-items:center;justify-content:center;pointer-events:none}
@@ -95,11 +95,11 @@
     background:radial-gradient(circle,rgba(241,80,15,.32),transparent 68%)}
   .ring-hub img{position:relative;width:100%;height:100%;object-fit:contain;
     filter:drop-shadow(0 0 26px rgba(241,80,15,.55))}
-  /* the ring spans ~1060px unscaled, so it must shrink before the content column does */
-  @media(max-width:1160px){.ring-stage{height:418px;transform:scale(.77);transform-origin:50% 50%}}
-  /* below this the ring would have to shrink past readable text, so fall back to a flat grid of circles */
-  @media(max-width:920px),(prefers-reduced-motion:reduce){
-    .ring-stage{height:auto;transform:none;perspective:none}
+  /* the orbit spans 772px, so shrink it once the content column drops below that */
+  @media(max-width:900px){.ring-stage{height:602px;transform:scale(.78);transform-origin:50% 50%}}
+  /* below this the circles would shrink past readable text, so fall back to a flat grid */
+  @media(max-width:660px),(prefers-reduced-motion:reduce){
+    .ring-stage{height:auto;transform:none}
     .ring{position:static;animation:none;transform:none!important;display:grid;
       grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:16px;justify-items:center}
     .icard{position:static;margin:0;width:100%;max-width:196px;height:auto;aspect-ratio:1/1;transform:none!important}
@@ -145,7 +145,7 @@
     background:linear-gradient(90deg,#c93007,var(--accent),var(--accent2));box-shadow:0 0 12px rgba(241,80,15,.7)}
   nav{transition:background .35s,padding .35s}
   nav.scrolled{background:rgba(10,8,6,.94);padding:8px 48px}
-  nav.scrolled .logo img{height:78px;margin:-20px 0}
+  nav.scrolled .logo img{height:92px;margin:-27px 0}
   nav ul a.active{color:var(--accent2)}
   #cursor-glow{position:fixed;width:420px;height:420px;border-radius:50%;pointer-events:none;z-index:1;
     background:radial-gradient(circle,rgba(241,80,15,.13),transparent 65%);transform:translate(-50%,-50%);mix-blend-mode:screen}
@@ -213,7 +213,7 @@
   .grid .card:hover{transition-delay:0s}
   @media(max-width:900px){.about-grid,.contact-grid{grid-template-columns:1fr}}
   @media(max-width:760px){nav ul{display:none}.hero{padding:0 24px}.inner{padding:80px 24px}#cursor-glow{display:none}
-    .logo img{height:64px;margin:-14px 0}nav.scrolled .logo img{height:56px;margin:-11px 0}}
+    .logo img{height:76px;margin:-19px 0}nav.scrolled .logo img{height:64px;margin:-14px 0}}
   /* narrow columns wrap .vcard-extra onto more lines, so reserve more resting height */
   @media(max-width:620px){.vcard{min-height:568px}}
   @media(max-width:480px){.founder-head{flex-direction:column;align-items:flex-start}
@@ -282,7 +282,7 @@
 </section>
 
 <section id="industries" class="inner">
-  <h2 class="reveal">Ten industries, one playbook</h2>
+  <h2 class="reveal">Many industries, one playbook</h2>
   <p class="sub reveal">Watch them converge above — every sector we've delivered in becomes part of the Athvie story.</p>
   <!-- DOM order of .icard must stay in sync with IND[] and SECTORS[] — both bind by index -->
   <!-- .reveal must sit on a wrapper: .reveal.on sets transform:none, which would beat the
@@ -466,12 +466,13 @@ if(track){
   track.innerHTML=h+h;
   if(reduced)track.style.animation='none';
 }
-/* industries ring — orbit placement + per-card counter-rotation so text always faces the viewer.
-   Counter-animation phase must be advanced by T*i/10 to cancel each card's own rotateY(i*36deg). */
-var RING_R=400,RING_T=44;
+/* industries ring — the ten circles orbit the logo in the screen plane. Each card is placed at
+   rotate(i*36deg) translateX(R); its inner element counter-rotates so the text stays upright.
+   The counter-animation phase is advanced by T*i/10 to cancel the card's own rotate(i*36deg). */
+var RING_R=300,RING_T=44;
 var ringCards=document.querySelectorAll('.ring .icard');
 ringCards.forEach(function(c,i){
-  c.style.transform='rotateY('+(i*36)+'deg) translateZ('+RING_R+'px)';
+  c.style.transform='rotate('+(i*36)+'deg) translateX('+RING_R+'px)';
   var inn=c.querySelector('.icard-in');
   if(inn)inn.style.animationDelay=(-(RING_T*i/10)).toFixed(2)+'s';
 });
