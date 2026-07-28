@@ -113,15 +113,17 @@
     transition:transform .45s cubic-bezier(.2,.7,.3,1),box-shadow .45s,border-color .3s}
   .vcard:hover{transform:translateY(-8px) scale(1.035);z-index:5;border-color:var(--accent);
     box-shadow:0 36px 82px rgba(0,0,0,.62),0 0 0 1px rgba(241,80,15,.3)}
-  .vcard .vcard-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;
-    opacity:.2;transform:scale(1.08);transition:opacity .5s,transform .7s}
-  .vcard .vcard-bg::after{content:'';position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(10,8,6,.4) 0%,rgba(10,8,6,.78) 58%,rgba(10,8,6,.95) 100%)}
-  .vcard:hover .vcard-bg{opacity:.5;transform:scale(1)}
+  /* the video runs at full clarity — never blurred or dimmed as a whole. The scrim is
+     bottom-weighted so it only darkens the band the text actually sits in. */
+  .vcard .vcard-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+  .vcard .vcard-bg video{width:100%;height:100%;object-fit:cover;display:block}
+  .vcard .vcard-bg::after{content:'';position:absolute;inset:0;pointer-events:none;transition:background .45s;
+    background:linear-gradient(180deg,rgba(241,80,15,.12) 0%,rgba(10,8,6,.04) 30%,
+      rgba(10,8,6,.52) 54%,rgba(10,8,6,.88) 74%,rgba(10,8,6,.97) 100%)}
+  .vcard:hover .vcard-bg::after{
+    background:linear-gradient(180deg,rgba(241,80,15,.1) 0%,rgba(10,8,6,.2) 24%,
+      rgba(10,8,6,.72) 46%,rgba(10,8,6,.93) 68%,rgba(10,8,6,.98) 100%)}
   .vcard small,.vcard h3,.vcard p,.vcard .metric,.vcard .vcard-extra{position:relative;z-index:1}
-  .vcard canvas{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:220px;height:220px;z-index:1;
-    transition:opacity .45s,transform .45s}
-  .vcard:hover canvas{opacity:.22;transform:translateX(-50%) scale(.9)}
   .vlogo{position:relative;z-index:1;display:flex;gap:9px;align-items:center;margin-bottom:16px}
   .vlogo img{height:40px;width:auto;max-width:118px;object-fit:contain;background:#fff;
     border-radius:9px;padding:5px;box-shadow:0 6px 18px rgba(0,0,0,.45)}
@@ -310,15 +312,15 @@
   <h2 class="reveal">Work that made noise</h2>
   <p class="sub reveal">Three flagship engagements. One playbook: culture + strategy + technology.</p>
   <div class="vert">
-    <div class="vcard reveal"><div class="vcard-bg" style="background-image:url('images/work-film.jpg')"></div><canvas id="c-reel" width="220" height="220"></canvas><div class="vlogo"><img src="logos/hombale.png" alt="Hombale Films"></div><small>Entertainment</small><h3>Hombale Films</h3>
+    <div class="vcard reveal"><div class="vcard-bg"><video src="videos/work-film.mp4" poster="images/work-film.jpg" autoplay muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div><div class="vlogo"><img src="logos/hombale.png" alt="Hombale Films"></div><small>Entertainment</small><h3>Hombale Films</h3>
       <p>Salaar Fan Army with AR filters and Army IDs, Kantara auditions handling 25,000+ applications, and HombaleVerse — India's first film-merchandise platform.</p>
       <div class="metric">1.2L+ fan registrations · ₹1 cr+ merch in 3 months</div>
       <div class="vcard-extra">Salaar Creative Squad turned fans into poster designers. Brands of Bharat drew 200+ culturally rooted Indian brands — the top 10 went global through HombaleVerse. Kantara Talent Tribe took grassroots performance mainstream. Plus Superman merchandise for PVR-INOX.</div></div>
-    <div class="vcard reveal"><div class="vcard-bg" style="background-image:url('images/work-edu.jpg')"></div><canvas id="c-cap" width="220" height="220"></canvas><div class="vlogo"><img src="logos/svyasa.png" alt="SVYASA University"></div><small>Education</small><h3>SVYASA University</h3>
+    <div class="vcard reveal"><div class="vcard-bg"><video src="videos/work-edu.mp4" poster="images/work-edu.jpg" autoplay muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div><div class="vlogo"><img src="logos/svyasa.png" alt="SVYASA University"></div><small>Education</small><h3>SVYASA University</h3>
       <p>City Campus digital launch and DigiVyasa — structured Indian yoga education taken global, launched by the Union Health Minister.</p>
       <div class="metric">1 crore+ reach · 1,000+ admissions in year one</div>
       <div class="vcard-extra">DigiVyasa carries the Yoga Instructor's Course, Yoga for Diabetes, Yoga for Hypertension and Stress Management. Alongside it, course design for IIM Bangalore's BBA in Digital Business &amp; Entrepreneurship, structured around interviews with CEOs.</div></div>
-    <div class="vcard reveal"><div class="vcard-bg" style="background-image:url('images/work-health.jpg')"></div><canvas id="c-heart" width="220" height="220"></canvas><div class="vlogo"><img src="logos/nimhans.png" alt="NIMHANS"><img src="logos/cadabams.png" alt="Cadabams Group"></div><small>Healthcare</small><h3>NIMHANS &amp; Cadabams</h3>
+    <div class="vcard reveal"><div class="vcard-bg"><video src="videos/work-health.mp4" poster="images/work-health.jpg" autoplay muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video></div><div class="vlogo"><img src="logos/nimhans.png" alt="NIMHANS"><img src="logos/cadabams.png" alt="Cadabams Group"></div><small>Healthcare</small><h3>NIMHANS &amp; Cadabams</h3>
       <p>A grievance-management platform for NIMHANS, and PR &amp; storytelling across the Cadabams Group — from MindTalk to WeNest.</p>
       <div class="metric">9 brands, one trusted ecosystem</div>
       <div class="vcard-extra">The NIMHANS platform handles digital intake, routing, status tracking and auditable records in one system. Across Cadabams: Amitha, MindTalk, WeNest, Anunitha, Care by Cadabams, Physiotattva, the Child Development Centre, Hospitals and Diagnostic Centres.</div></div>
@@ -479,6 +481,20 @@ ringCards.forEach(function(c,i){
 /* hub reuses the nav logo's data URI rather than embedding a third copy */
 var hubImg=document.getElementById('ring-hub-img'),navLogo=document.querySelector('nav .logo img');
 if(hubImg&&navLogo)hubImg.src=navLogo.src;
+/* work-card videos: only decode while on screen, and hold still under reduced motion.
+   play() can reject under autoplay policy, so the promise is swallowed. */
+var workVids=[].slice.call(document.querySelectorAll('.vcard-bg video'));
+if(workVids.length){
+  if(reduced){
+    workVids.forEach(function(v){v.removeAttribute('autoplay');v.pause();});
+  }else{
+    var vio=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){var p=e.target.play();if(p&&p.catch)p.catch(function(){});}
+      else e.target.pause();
+    });},{threshold:.15});
+    workVids.forEach(function(v){vio.observe(v);});
+  }
+}
 /* industry modals — full sector write-ups from the company profile */
 var IND=[
 {s:'Entertainment',t:'Films that became movements',b:'Spearheaded marketing, communication and PR for major Indian film franchises — Salaar, Kantara, Mahavatar Narsimha, Yuva, Bagheera and Dhoomam — positioning each release as a cultural event through multi-platform strategy, digital-first execution, earned PR, and influencer & meme ecosystems.\n\nSalaar Fan Army — one of Indian cinema’s most innovative fan-engagement models: AR filters, personalised Army IDs, tags and numbers. 1.2 lakh+ verified registrations.\n\nSalaar Creative Squad — fans designed posters and artwork, blurring the line between consumers and creators.\n\nKantara: A Legend Chapter-1 Auditions — a tech-driven audition process managing 25,000+ applications with transparent, scalable digital shortlisting.\n\nKantara Talent Tribe — grassroots performances inspired by Kantara, connecting cultural pride to mainstream cinema.\n\nBrands of Bharat — 200+ culturally rooted Indian brands applied; the top 10 were featured with Kantara through HombaleVerse, taken from local to global.\n\nHombaleVerse — India’s first production-house merchandise platform: ₹1 crore+ revenue within 3 months of the Salaar campaign.\n\nAlso: Superman merchandise for PVR-INOX, and the website for Astra Studios — a premium VFX & creative studio.'},
@@ -973,26 +989,8 @@ var tmpV=new THREE.Vector3();
   renderer.render(scene,camera);
 })();
 
-/* ============ MINI SCENES IN WORK CARDS ============ */
-function mini(canvasId,model,rot,pulse){
-  var c=document.getElementById(canvasId);
-  var r=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});
-  r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(220,220,false);
-  var sc=new THREE.Scene();
-  var cam=new THREE.PerspectiveCamera(45,1,.1,50);cam.position.set(0,.4,3.4);cam.lookAt(0,0,0);
-  sc.add(new THREE.AmbientLight(0xffffff,.65));
-  var sp=new THREE.PointLight(0xffffff,1);sp.position.set(3,4,4);sc.add(sp);
-  var wl=new THREE.PointLight(ORANGE,.7);wl.position.set(-3,-1,3);sc.add(wl);
-  sc.add(model);
-  (function loop(){requestAnimationFrame(loop);
-    if(document.hidden)return;
-    model.rotation.y+=rot;
-    if(pulse){var s2=1+Math.sin(performance.now()/500)*.06;model.scale.setScalar(s2);}
-    r.render(sc,cam);})();
-}
-mini('c-reel',entertainment(),.012,false);
-mini('c-cap',education(),.01,false);
-mini('c-heart',healthcare(),.008,true);
+/* The work cards used to host mini three.js scenes here; they now run video backgrounds
+   instead. entertainment()/education()/healthcare() are still used by SECTORS[] in the hero. */
 }catch(err){console.warn('3D disabled:',err);var b=document.createElement('div');b.style.cssText='position:fixed;bottom:10px;left:10px;z-index:99;background:#c00;color:#fff;padding:8px 14px;border-radius:8px;font:13px sans-serif';b.textContent='3D error: '+err.message;document.body.appendChild(b);}
 </script>
 </body>
