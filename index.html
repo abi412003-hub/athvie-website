@@ -69,43 +69,46 @@
     font-size:13px;line-height:1.65;font-weight:400;
     transition:max-height .45s ease,opacity .35s ease,margin-top .45s ease}
   .card:hover .card-more{max-height:150px;opacity:1;margin-top:14px}
-  /* ===== industries: circles orbiting the logo, 360° in the screen plane ===== */
-  .ring-stage{position:relative;height:772px}
-  .ring{position:absolute;inset:0;animation:ringspin 44s linear infinite}
-  /* the ring never pauses — hovering opens the popup instead of stopping rotation */
-  @keyframes ringspin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-  @keyframes ringspin-rev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-  .icard{position:absolute;top:50%;left:50%;width:172px;height:172px;margin:-86px 0 0 -86px;
-    border-radius:50%;cursor:pointer}
-  .icard-in{width:100%;height:100%;border-radius:50%;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;padding:20px;
-    background:radial-gradient(130% 130% at 50% 0%,rgba(241,80,15,.24),rgba(20,14,10,.97));
-    border:1px solid var(--border);backdrop-filter:blur(8px);
-    animation:ringspin-rev 44s linear infinite;
-    transition:border-color .3s,box-shadow .3s,background .3s}
-  .icard:hover .icard-in{border-color:var(--accent);
-    background:radial-gradient(120% 120% at 50% 0%,rgba(241,80,15,.34),rgba(24,15,9,.96));
-    box-shadow:0 0 0 1px rgba(241,80,15,.4),0 18px 46px rgba(0,0,0,.6),0 0 44px rgba(241,80,15,.25)}
-  .icard h3{font-size:15.5px;margin-bottom:5px;line-height:1.25}
-  .icard .itag{color:var(--muted);font-size:11.5px;line-height:1.45;font-weight:300}
-  .icard .ihint{margin-top:7px;font-size:14px;color:var(--accent2);opacity:0;transition:opacity .25s}
-  .icard:hover .ihint{opacity:.95}
-  .ring-hub{position:absolute;top:50%;left:50%;width:186px;height:186px;margin:-93px 0 0 -93px;
-    z-index:6;display:flex;align-items:center;justify-content:center;pointer-events:none}
-  .ring-hub::before{content:'';position:absolute;inset:-42px;border-radius:50%;
-    background:radial-gradient(circle,rgba(241,80,15,.32),transparent 68%)}
-  .ring-hub img{position:relative;width:100%;height:100%;object-fit:contain;
-    filter:drop-shadow(0 0 26px rgba(241,80,15,.55))}
-  /* the orbit spans 772px, so shrink it once the content column drops below that */
-  @media(max-width:900px){.ring-stage{height:602px;transform:scale(.78);transform-origin:50% 50%}}
-  /* below this the circles would shrink past readable text, so fall back to a flat grid */
-  @media(max-width:660px),(prefers-reduced-motion:reduce){
-    .ring-stage{height:auto;transform:none}
-    .ring{position:static;animation:none;transform:none!important;display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:16px;justify-items:center}
-    .icard{position:static;margin:0;width:100%;max-width:196px;height:auto;aspect-ratio:1/1;transform:none!important}
-    .icard-in{animation:none!important}
-    .ring-hub{display:none}
+  /* ===== industries: a sector index — 2x5 hairline grid, exact, no orphan cell.
+     Rules do the work here rather than fills: no discs, no glass, no orbit, no glow. ===== */
+  .sgrid{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--border)}
+  .scell{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+    align-items:center;gap:24px;width:100%;text-align:left;
+    padding:30px 22px 30px 2px;margin:0;overflow:hidden;
+    background:none;border:0;border-bottom:1px solid var(--border);
+    color:inherit;font-family:inherit;cursor:pointer}
+  /* the vertical rule between the two columns — only on the left cell of each pair */
+  .scell:nth-child(odd){border-right:1px solid var(--border);padding-right:34px}
+  .scell:nth-child(even){padding-left:32px}
+  /* a warm wash that falls away to the right, so the row reads left-to-right */
+  .scell::after{content:'';position:absolute;inset:0;z-index:0;opacity:0;pointer-events:none;
+    background:linear-gradient(90deg,rgba(241,80,15,.10),rgba(241,80,15,0) 64%);
+    transition:opacity .35s}
+  /* the accent hairline draws across the bottom of the row on hover */
+  .scell::before{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;z-index:1;
+    background:var(--accent);transform:scaleX(0);transform-origin:left;
+    transition:transform .5s cubic-bezier(.2,.7,.3,1)}
+  .scell:hover::after,.scell:focus-visible::after{opacity:1}
+  .scell:hover::before,.scell:focus-visible::before{transform:scaleX(1)}
+  .scell:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+  .scell>*{position:relative;z-index:2}
+  .snum{font-family:'Sora',sans-serif;font-weight:800;font-size:13px;letter-spacing:2px;
+    color:#6f6055;font-variant-numeric:tabular-nums;transition:color .3s}
+  .scell:hover .snum,.scell:focus-visible .snum{color:var(--accent)}
+  .sname{display:block;font-family:'Sora',sans-serif;font-weight:600;font-size:22px;
+    line-height:1.2;letter-spacing:-.01em;color:var(--text)}
+  .stag{display:block;margin-top:6px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+  .sgo{font-size:17px;color:var(--accent2);opacity:0;transform:translateX(-10px);
+    transition:opacity .3s,transform .4s cubic-bezier(.2,.7,.3,1)}
+  .scell:hover .sgo,.scell:focus-visible .sgo{opacity:1;transform:none}
+  /* one column below this — the name and tag need the full measure to stay readable */
+  @media(max-width:760px){
+    .sgrid{grid-template-columns:1fr}
+    .scell{gap:18px;padding:22px 2px}
+    .scell:nth-child(odd){border-right:0;padding-right:2px}
+    .scell:nth-child(even){padding-left:2px}
+    .sname{font-size:19px}
+    .sgo{opacity:.55;transform:none}
   }
   .vert{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
   /* min-height reserves room for .vcard-extra so opening it on hover never grows the grid row */
@@ -156,7 +159,7 @@
     background:rgba(20,14,10,.85);color:var(--accent2);font-size:20px;cursor:pointer;opacity:0;pointer-events:none;
     transition:opacity .3s,transform .3s;transform:translateY(10px)}
   #toTop.show{opacity:1;pointer-events:auto;transform:none}
-  .card,.icard,.vcard,.imp{will-change:transform}
+  .card,.vcard,.imp{will-change:transform}
   .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:start}
   .about-copy p{color:var(--muted);line-height:1.9;font-weight:300;margin-bottom:16px}
   .founder-card{background:var(--glass);border:1px solid var(--border);border-radius:22px;padding:30px;backdrop-filter:blur(10px)}
@@ -311,25 +314,18 @@
 <section id="industries" class="inner">
   <h2 class="reveal">Many industries, one playbook</h2>
   <p class="sub reveal">Watch them converge above — every sector we've delivered in becomes part of the Athvie story.</p>
-  <!-- DOM order of .icard must stay in sync with IND[] and SECTORS[] — both bind by index -->
-  <!-- .reveal must sit on a wrapper: .reveal.on sets transform:none, which would beat the
-       media-query scale() on .ring-stage and stop the ring shrinking on narrow screens -->
-  <div class="reveal">
-  <div class="ring-stage">
-    <div class="ring">
-      <div class="icard"><div class="icard-in"><h3>Entertainment</h3><span class="itag">Fan armies &amp; merch</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Education</h3><span class="itag">Campuses taken digital</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Healthcare</h3><span class="itag">Care, communicated</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Political</h3><span class="itag">Campaign infrastructure</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Agriculture</h3><span class="itag">Farm to ward</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Real Estate</h3><span class="itag">Property, protected</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Government</h3><span class="itag">Public systems, simplified</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Fashion</h3><span class="itag">AI meets the atelier</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Hospitality</h3><span class="itag">Stays that tell stories</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>E-commerce</h3><span class="itag">Commerce at scale</span><span class="ihint">↗</span></div></div>
-    </div>
-    <div class="ring-hub"><img id="ring-hub-img" alt="Athvie"></div>
-  </div>
+  <!-- DOM order of .scell must stay in sync with IND[] and SECTORS[] — both bind by index -->
+  <div class="sgrid reveal">
+    <button class="scell" type="button"><span class="snum">01</span><span><span class="sname">Entertainment</span><span class="stag">Fan armies &amp; merch</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">02</span><span><span class="sname">Education</span><span class="stag">Campuses taken digital</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">03</span><span><span class="sname">Healthcare</span><span class="stag">Care, communicated</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">04</span><span><span class="sname">Political</span><span class="stag">Campaign infrastructure</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">05</span><span><span class="sname">Agriculture</span><span class="stag">Farm to ward</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">06</span><span><span class="sname">Real Estate</span><span class="stag">Property, protected</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">07</span><span><span class="sname">Government</span><span class="stag">Public systems, simplified</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">08</span><span><span class="sname">Fashion</span><span class="stag">AI meets the atelier</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">09</span><span><span class="sname">Hospitality</span><span class="stag">Stays that tell stories</span></span><span class="sgo" aria-hidden="true">→</span></button>
+    <button class="scell" type="button"><span class="snum">10</span><span><span class="sname">E-commerce</span><span class="stag">Commerce at scale</span></span><span class="sgo" aria-hidden="true">→</span></button>
   </div>
 </section>
 
@@ -453,7 +449,7 @@ var cio=new IntersectionObserver(function(es){es.forEach(function(e){
 document.querySelectorAll('[data-count]').forEach(function(el){cio.observe(el);});
 /* pointer effects (fine pointers only) */
 if(!reduced&&matchMedia('(pointer:fine)').matches){
-  /* .icard is excluded — the industries ring owns its own 3D transform */
+  /* .scell is excluded — the sector index uses hairlines and a wash, not a tilt */
   document.querySelectorAll('.card,.imp').forEach(function(c){
     var pop=c.classList.contains('card')?1.08:1;
     c.addEventListener('mousemove',function(e){var r=c.getBoundingClientRect();
@@ -504,19 +500,6 @@ if(trackA&&trackB){
   trackB.innerHTML=b+b;
   if(reduced){trackA.style.animation='none';trackB.style.animation='none';}
 }
-/* industries ring — the ten circles orbit the logo in the screen plane. Each card is placed at
-   rotate(i*36deg) translateX(R); its inner element counter-rotates so the text stays upright.
-   The counter-animation phase is advanced by T*i/10 to cancel the card's own rotate(i*36deg). */
-var RING_R=300,RING_T=44;
-var ringCards=document.querySelectorAll('.ring .icard');
-ringCards.forEach(function(c,i){
-  c.style.transform='rotate('+(i*36)+'deg) translateX('+RING_R+'px)';
-  var inn=c.querySelector('.icard-in');
-  if(inn)inn.style.animationDelay=(-(RING_T*i/10)).toFixed(2)+'s';
-});
-/* hub reuses the nav logo's data URI rather than embedding a third copy */
-var hubImg=document.getElementById('ring-hub-img'),navLogo=document.querySelector('nav .logo img');
-if(hubImg&&navLogo)hubImg.src=navLogo.src;
 /* work-card videos: only decode while on screen, and hold still under reduced motion.
    play() can reject under autoplay policy, so the promise is swallowed. */
 var workVids=[].slice.call(document.querySelectorAll('.vcard-bg video'));
@@ -593,29 +576,15 @@ function openM(i,viaHover){
   /* only a clicked popup locks the page — a hover one must not fight the scroll */
   document.body.style.overflow=hoverOpen?'':'hidden';
 }
-/* Hold the cursor on a circle to open it; the short delay stops the popup firing
-   as the pointer sweeps across the ring. Take the cursor away and it closes again.
-   Clicking opens it sticky, so it stays until dismissed. */
-var HOLD=420,holdTimer=null,closeTimer=null;
-function cancelClose(){clearTimeout(closeTimer);}
-function scheduleClose(){
-  if(!hoverOpen)return;
-  clearTimeout(closeTimer);
-  closeTimer=setTimeout(closeM,170); /* grace period to travel between circle and popup */
-}
-document.querySelectorAll('.icard').forEach(function(c,i){
-  c.addEventListener('mouseenter',function(){
-    cancelClose();clearTimeout(holdTimer);
-    holdTimer=setTimeout(function(){openM(i,true);},HOLD);
-  });
-  c.addEventListener('mouseleave',function(){clearTimeout(holdTimer);scheduleClose();});
-  c.addEventListener('click',function(){clearTimeout(holdTimer);cancelClose();openM(i,false);});
+/* The index rows are real buttons, so click, Enter and Space all open the write-up and
+   the whole section is reachable by keyboard. Focus returns to the row when it closes. */
+var lastFocus=null;
+document.querySelectorAll('.scell').forEach(function(c,i){
+  c.addEventListener('click',function(){lastFocus=c;openM(i,false);});
 });
-var mboxEl=modal.querySelector('.mbox');
-mboxEl.addEventListener('mouseenter',cancelClose);
-mboxEl.addEventListener('mouseleave',scheduleClose);
-function closeM(){clearTimeout(closeTimer);hoverOpen=false;
-  modal.classList.remove('open','hover');document.body.style.overflow='';}
+function closeM(){hoverOpen=false;
+  modal.classList.remove('open','hover');document.body.style.overflow='';
+  if(lastFocus){lastFocus.focus();lastFocus=null;}}
 modal.querySelector('.mback').addEventListener('click',closeM);
 modal.querySelector('.mclose').addEventListener('click',closeM);
 addEventListener('keydown',function(e){if(e.key==='Escape')closeM();});
