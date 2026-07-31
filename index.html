@@ -177,6 +177,8 @@
   .marquee{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
     mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
   .mtrack{display:flex;gap:44px;align-items:center;width:max-content;animation:scrollx 34s linear infinite}
+  .marquee .mtrack + .mtrack{margin-top:26px}
+  .mtrack.rev{animation-direction:reverse}
   .marquee:hover .mtrack{animation-play-state:paused}
   @keyframes scrollx{to{transform:translateX(-50%)}}
   /* no chip box and no plate — the real logos scroll directly on the page, always full colour */
@@ -369,7 +371,10 @@
 <section id="clients" class="inner">
   <h2 class="reveal">Trusted by</h2>
   <p class="sub reveal">Institutions and icons — across India and beyond.</p>
-  <div class="marquee reveal"><div class="mtrack" id="mtrack"></div></div>
+  <div class="marquee reveal">
+    <div class="mtrack" id="mtrackA"></div>
+    <div class="mtrack rev" id="mtrackB"></div>
+  </div>
 </section>
 </div>
 
@@ -485,15 +490,20 @@ var CLIENTS=[
  {n:'Global Malls',i:'logos/globalmalls.png'},
  {n:'PVR-INOX',i:'logos/pvrinox.png',w:1}
 ];
-var track=document.getElementById('mtrack');
-if(track){
-  var h=CLIENTS.map(function(c){
-    var cls=((c.w?'wide ':'')+(c.lift?'lift':'')).trim();
-    var img='<img class="'+cls+'" src="'+c.i+'" alt="'+c.n+'" title="'+c.n+'" onerror="this.outerHTML=\'<div class=mono>'+c.n.charAt(0)+'</div>\'">';
-    return '<div class="lchip">'+img+(c.w?'':'<span>'+c.n+'</span>')+'</div>';
-  }).join('');
-  track.innerHTML=h+h;
-  if(reduced)track.style.animation='none';
+var trackA=document.getElementById('mtrackA');
+var trackB=document.getElementById('mtrackB');
+function chip(c){
+  var cls=((c.w?'wide ':'')+(c.lift?'lift':'')).trim();
+  var img='<img class="'+cls+'" src="'+c.i+'" alt="'+c.n+'" title="'+c.n+'" onerror="this.outerHTML=\'<div class=mono>'+c.n.charAt(0)+'</div>\'">';
+  return '<div class="lchip">'+img+(c.w?'':'<span>'+c.n+'</span>')+'</div>';
+}
+if(trackA&&trackB){
+  var half=Math.ceil(CLIENTS.length/2);
+  var a=CLIENTS.slice(0,half).map(chip).join('');
+  var b=CLIENTS.slice(half).map(chip).join('');
+  trackA.innerHTML=a+a;
+  trackB.innerHTML=b+b;
+  if(reduced){trackA.style.animation='none';trackB.style.animation='none';}
 }
 /* industries ring — the ten circles orbit the logo in the screen plane. Each card is placed at
    rotate(i*36deg) translateX(R); its inner element counter-rotates so the text stays upright.
