@@ -70,40 +70,56 @@
     transition:max-height .45s ease,opacity .35s ease,margin-top .45s ease}
   .card:hover .card-more{max-height:150px;opacity:1;margin-top:14px}
   /* ===== industries: circles orbiting the logo, 360° in the screen plane ===== */
-  .ring-stage{position:relative;height:772px}
+  .ring-stage{position:relative;height:920px}
+  /* frosted glass needs light behind it to read as glass — a soft bloom the panels refract */
+  .ring-stage::before{content:'';position:absolute;top:50%;left:50%;width:820px;height:820px;
+    margin:-410px 0 0 -410px;border-radius:50%;pointer-events:none;z-index:0;
+    background:radial-gradient(circle,rgba(241,80,15,.20),rgba(241,80,15,.07) 46%,transparent 70%)}
   .ring{position:absolute;inset:0;animation:ringspin 44s linear infinite}
   /* the ring never pauses — hovering opens the popup instead of stopping rotation */
   @keyframes ringspin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
   @keyframes ringspin-rev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-  .icard{position:absolute;top:50%;left:50%;width:172px;height:172px;margin:-86px 0 0 -86px;
-    border-radius:50%;cursor:pointer}
-  .icard-in{width:100%;height:100%;border-radius:50%;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;padding:20px;
-    background:radial-gradient(130% 130% at 50% 0%,rgba(241,80,15,.24),rgba(20,14,10,.97));
-    border:1px solid var(--border);backdrop-filter:blur(8px);
+  /* frosted glass panels, each carrying a glossy orb — the cards ride over the hub logo */
+  .icard{position:absolute;top:50%;left:50%;width:196px;height:152px;margin:-76px 0 0 -98px;
+    border-radius:26px;cursor:pointer;z-index:8}
+  .icard-in{width:100%;height:100%;border-radius:26px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:16px 16px 18px;
+    background:linear-gradient(150deg,rgba(255,255,255,.14),rgba(241,80,15,.10) 46%,rgba(255,255,255,.05));
+    border:1px solid rgba(255,255,255,.20);
+    backdrop-filter:blur(16px) saturate(135%);-webkit-backdrop-filter:blur(16px) saturate(135%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(255,255,255,.06),
+      0 18px 44px rgba(0,0,0,.52);
     animation:ringspin-rev 44s linear infinite;
     transition:border-color .3s,box-shadow .3s,background .3s}
-  .icard:hover .icard-in{border-color:var(--accent);
-    background:radial-gradient(120% 120% at 50% 0%,rgba(241,80,15,.34),rgba(24,15,9,.96));
-    box-shadow:0 0 0 1px rgba(241,80,15,.4),0 18px 46px rgba(0,0,0,.6),0 0 44px rgba(241,80,15,.25)}
-  .icard h3{font-size:15.5px;margin-bottom:5px;line-height:1.25}
+  .icard:hover .icard-in{border-color:rgba(241,80,15,.62);
+    background:linear-gradient(150deg,rgba(255,255,255,.20),rgba(241,80,15,.20) 46%,rgba(255,255,255,.07));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.40),0 22px 56px rgba(0,0,0,.6),0 0 46px rgba(241,80,15,.28)}
+  /* glossy 3D sphere — layered radial gradients give the lit highlight and shaded underside */
+  .icard .iorb{width:46px;height:46px;border-radius:50%;flex:none;margin-bottom:10px;
+    background:radial-gradient(circle at 32% 26%,#ffd9c2 0%,#f9863f 22%,var(--accent) 48%,#8c2f07 78%,#3a1203 100%);
+    box-shadow:inset -3px -5px 10px rgba(0,0,0,.45),inset 2px 3px 8px rgba(255,255,255,.35),
+      0 8px 20px rgba(241,80,15,.42);position:relative}
+  .icard .iorb::after{content:'';position:absolute;top:15%;left:24%;width:30%;height:22%;
+    border-radius:50%;background:rgba(255,255,255,.72);filter:blur(3px)}
+  .icard h3{font-size:15.5px;margin-bottom:4px;line-height:1.25}
   .icard .itag{color:var(--muted);font-size:11.5px;line-height:1.45;font-weight:300}
-  .icard .ihint{margin-top:7px;font-size:14px;color:var(--accent2);opacity:0;transition:opacity .25s}
+  .icard .ihint{margin-top:6px;font-size:14px;color:var(--accent2);opacity:0;transition:opacity .25s}
   .icard:hover .ihint{opacity:.95}
+  /* the hub sits behind the glass panels — cards sweeping past may cover it, which is intended */
   .ring-hub{position:absolute;top:50%;left:50%;width:186px;height:186px;margin:-93px 0 0 -93px;
-    z-index:6;display:flex;align-items:center;justify-content:center;pointer-events:none}
+    z-index:1;display:flex;align-items:center;justify-content:center;pointer-events:none}
   .ring-hub::before{content:'';position:absolute;inset:-42px;border-radius:50%;
     background:radial-gradient(circle,rgba(241,80,15,.32),transparent 68%)}
   .ring-hub img{position:relative;width:100%;height:100%;object-fit:contain;
     filter:drop-shadow(0 0 26px rgba(241,80,15,.55))}
-  /* the orbit spans 772px, so shrink it once the content column drops below that */
-  @media(max-width:900px){.ring-stage{height:602px;transform:scale(.78);transform-origin:50% 50%}}
+  /* the orbit spans 920px, so shrink it once the content column drops below that */
+  @media(max-width:980px){.ring-stage{height:690px;transform:scale(.75);transform-origin:50% 50%}}
   /* below this the circles would shrink past readable text, so fall back to a flat grid */
   @media(max-width:660px),(prefers-reduced-motion:reduce){
     .ring-stage{height:auto;transform:none}
     .ring{position:static;animation:none;transform:none!important;display:grid;
       grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:16px;justify-items:center}
-    .icard{position:static;margin:0;width:100%;max-width:196px;height:auto;aspect-ratio:1/1;transform:none!important}
+    .icard{position:static;margin:0;width:100%;max-width:210px;height:152px;transform:none!important}
     .icard-in{animation:none!important}
     .ring-hub{display:none}
   }
@@ -317,16 +333,16 @@
   <div class="reveal">
   <div class="ring-stage">
     <div class="ring">
-      <div class="icard"><div class="icard-in"><h3>Entertainment</h3><span class="itag">Fan armies &amp; merch</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Education</h3><span class="itag">Campuses taken digital</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Healthcare</h3><span class="itag">Care, communicated</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Political</h3><span class="itag">Campaign infrastructure</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Agriculture</h3><span class="itag">Farm to ward</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Real Estate</h3><span class="itag">Property, protected</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Government</h3><span class="itag">Public systems, simplified</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Fashion</h3><span class="itag">AI meets the atelier</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>Hospitality</h3><span class="itag">Stays that tell stories</span><span class="ihint">↗</span></div></div>
-      <div class="icard"><div class="icard-in"><h3>E-commerce</h3><span class="itag">Commerce at scale</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Entertainment</h3><span class="itag">Fan armies &amp; merch</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Education</h3><span class="itag">Campuses taken digital</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Healthcare</h3><span class="itag">Care, communicated</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Political</h3><span class="itag">Campaign infrastructure</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Agriculture</h3><span class="itag">Farm to ward</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Real Estate</h3><span class="itag">Property, protected</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Government</h3><span class="itag">Public systems, simplified</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Fashion</h3><span class="itag">AI meets the atelier</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>Hospitality</h3><span class="itag">Stays that tell stories</span><span class="ihint">↗</span></div></div>
+      <div class="icard"><div class="icard-in"><span class="iorb"></span><h3>E-commerce</h3><span class="itag">Commerce at scale</span><span class="ihint">↗</span></div></div>
     </div>
     <div class="ring-hub"><img id="ring-hub-img" alt="Athvie"></div>
   </div>
@@ -507,7 +523,7 @@ if(trackA&&trackB){
 /* industries ring — the ten circles orbit the logo in the screen plane. Each card is placed at
    rotate(i*36deg) translateX(R); its inner element counter-rotates so the text stays upright.
    The counter-animation phase is advanced by T*i/10 to cancel the card's own rotate(i*36deg). */
-var RING_R=300,RING_T=44;
+var RING_R=336,RING_T=44;
 var ringCards=document.querySelectorAll('.ring .icard');
 ringCards.forEach(function(c,i){
   c.style.transform='rotate('+(i*36)+'deg) translateX('+RING_R+'px)';
